@@ -1,6 +1,7 @@
 // lib/screens/main_navigation.dart
 import 'package:flutter/material.dart';
 import 'home_beauty_screen.dart';
+import 'client_profile_ui.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -17,7 +18,7 @@ class _MainNavigationState extends State<MainNavigation> {
     Center(child: Text("Explore")),
     Center(child: Text("Bookings")),
     Center(child: Text("Chat")),
-    Center(child: Text("Profile")),
+    ClientProfileScreen(),
   ];
 
   @override

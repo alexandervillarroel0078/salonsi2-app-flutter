@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/api_service.dart';
+import '../controllers/service_controller.dart';
 
-class ServicesScreen extends StatelessWidget {
+class ServicesScreen extends StatefulWidget {
   const ServicesScreen({super.key});
 
+  @override
+  _ServicesScreenState createState() => _ServicesScreenState();
+}
+
+class _ServicesScreenState extends State<ServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +19,6 @@ class ServicesScreen extends StatelessWidget {
         backgroundColor: Colors.pinkAccent,
       ),
       body: FutureBuilder<List<dynamic>>(
-        // CAMBIO: usamos List<dynamic> directamente
         future: ApiService.getServicios(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,22 +54,52 @@ class ServicesScreen extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Text('Bs ${s['price']}'),
-                          if (s['has_discount'] == 1)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Text(
-                                'Ahora Bs ${s['discount_price']}',
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
+                          Text(
+                            'Bs ${s['price']}',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 4),
                       Text('Duración: ${s['duration_minutes']} min'),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            // Verificamos si el servicio ya ha sido añadido antes
+                            if (Provider.of<ServiceController>(context,
+                                    listen: false)
+                                .selectedServices
+                                .any((service) =>
+                                    service['name'] == s['name'])) {
+                              // Si el servicio ya está en la lista, mostramos un mensaje
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        '${s['name']} ya ha sido añadido')),
+                              );
+                            } else {
+                              // Si no está en la lista, lo añadimos
+                              Provider.of<ServiceController>(context,
+                                      listen: false)
+                                  .addService(s);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('${s['name']} añadido')),
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text('Añadir'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.pinkAccent,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            textStyle: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   isThreeLine: true,
@@ -73,6 +109,16 @@ class ServicesScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Navegar a la pantalla de "Servicios seleccionados"
+          Navigator.pushNamed(context, '/selected-services');
+        },
+        icon: const Icon(Icons.check),
+        label: const Text('Ver Servicios Seleccionados'),
+        backgroundColor: Colors.pinkAccent,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

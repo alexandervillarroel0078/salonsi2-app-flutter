@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:provider/provider.dart';
+import 'controllers/service_controller.dart';
 // Screens
 import 'screens/main_navigation.dart';
 import 'screens/login_screen.dart';
 import 'screens/services_screen.dart';
+import 'screens/selected_services_screen.dart';
+import 'screens/confirm_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) =>
+          ServiceController(), // Proveedor para ServiceController
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,6 +35,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/home': (context) => const MainNavigation(),
         '/services': (context) => const ServicesScreen(),
+        '/selected-services': (context) => const SelectedServicesScreen(),
+        '/confirm': (context) => const ConfirmScreen(),
       },
     );
   }
