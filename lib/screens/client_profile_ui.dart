@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salonappflutter/screens/citas_screen.dart';
 
 class ClientProfileScreen extends StatelessWidget {
   const ClientProfileScreen({super.key});
@@ -62,6 +63,13 @@ class ClientProfileScreen extends StatelessWidget {
                     const Icon(Icons.calendar_month, color: Colors.pinkAccent),
                 title: const Text('Citas recientes'),
                 subtitle: const Text('Tratamiento facial, 01 Mayo 2025'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CitasScreen()),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 20),

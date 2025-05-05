@@ -3,6 +3,7 @@ import '../controllers/home_controller.dart';
 import '../services/especialistas_api.dart';
 import 'services_screen.dart';
 import 'combos_screen.dart';
+import 'package:salonappflutter/screens/promotions_screen.dart';
 
 class HomeBeautyScreen extends StatelessWidget {
   const HomeBeautyScreen({super.key});
@@ -124,7 +125,13 @@ class HomeBeautyScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   TextButton(
-                    onPressed: () {}, // Acción vacía
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PromotionsScreen()),
+                      );
+                    },
                     child: const Text(
                       'Ver todas',
                       style: TextStyle(color: Colors.pink),
