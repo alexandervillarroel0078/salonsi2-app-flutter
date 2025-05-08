@@ -1,7 +1,7 @@
 // lib/screens/main_navigation.dart
 import 'package:flutter/material.dart';
 import 'home_beauty_screen.dart';
-import 'client_profile_ui.dart';
+import 'client_profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});

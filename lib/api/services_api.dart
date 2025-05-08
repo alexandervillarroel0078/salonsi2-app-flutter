@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class ServicesApi {
   static Future<List<dynamic>> fetchServices() async {
-    var url = Uri.parse('http://10.0.2.2:8000/api/services');
+    var url = Uri.parse('https://bellezapro360.com/api/services');
 
     try {
       var response = await http.get(url);

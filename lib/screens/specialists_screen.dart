@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class EspecialistasApi {
   static const String baseUrl =
-      'http://10.0.2.2:8000'; // cambia si usas Render o producción
+      'https://bellezapro360.com'; // cambia si usas Render o producción
 
   static Future<List<dynamic>> fetchEspecialistas() async {
     final response = await http.get(Uri.parse('$baseUrl/api/especialistas'));

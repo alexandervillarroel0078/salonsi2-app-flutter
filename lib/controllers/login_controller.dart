@@ -26,7 +26,8 @@ class LoginController {
 
     if (result['success']) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', result['token']); // Guarda el token
+      await prefs.setString('token', result['token']);
+      await prefs.setInt('cliente_id', result['user']['id']); // ✅ GUARDAR EL ID
 
       Navigator.pushReplacementNamed(context, '/home');
     } else {

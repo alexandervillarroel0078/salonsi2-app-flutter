@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:8000';
+  static const String baseUrl = 'https://bellezapro360.com';
 
   // LOGIN
   static Future<Map<String, dynamic>> login(
@@ -31,8 +31,11 @@ class ApiService {
       if (data['token'] != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
+        await prefs.setInt('cliente_id', data['cliente']['id']); // ✅ Correcto
+        // ✅ GUARDAR ID REAL
         await prefs.setString('name', data['user']['name'] ?? '');
         await prefs.setString('email', data['user']['email'] ?? '');
+
         return {
           'success': true,
           'token': data['token'],

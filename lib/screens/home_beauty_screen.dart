@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
 import '../controllers/home_controller.dart';
 import '../services/especialistas_api.dart';
+import '../models/cliente.dart';
+import '../services/cliente_api.dart';
 import 'services_screen.dart';
 import 'combos_screen.dart';
 import 'package:salonappflutter/screens/promotions_screen.dart';
 
-class HomeBeautyScreen extends StatelessWidget {
+class HomeBeautyScreen extends StatefulWidget {
   const HomeBeautyScreen({super.key});
+
+  @override
+  State<HomeBeautyScreen> createState() => _HomeBeautyScreenState();
+}
+
+class _HomeBeautyScreenState extends State<HomeBeautyScreen> {
+  late Future<Cliente> cliente;
+
+  @override
+  void initState() {
+    super.initState();
+    cliente = ClienteApi.fetchCliente(11); // 👈 Tu ID real
+  }
+
+  String getNombreCorto(String nombreCompleto) {
+    final partes = nombreCompleto.split(' ');
+    return partes.isNotEmpty ? partes[0] : nombreCompleto;
+  }
 
   static Widget _buildPromoCard(String title, Color color) {
     return Container(
@@ -75,27 +95,56 @@ class HomeBeautyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // parte superior y cerrar secion
+              // parte superior y cerrar sesión
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hello, Ahana',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Welcome to RedElx Salon',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
+                  FutureBuilder<Cliente>(
+                    future: cliente,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Hola, invitado',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Bienvenido a RedElx Salon',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        );
+                      }
+
+                      final c = snapshot.data!;
+                      final nombre = getNombreCorto(c.name);
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hola, $nombre',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Bienvenido a RedElx Salon',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   Row(
                     children: [
@@ -236,7 +285,7 @@ class HomeBeautyScreen extends StatelessWidget {
 
               const SizedBox(height: 28),
 
-              // Especialistas (Diseño
+              // Especialistas
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
