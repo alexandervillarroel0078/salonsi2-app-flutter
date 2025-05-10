@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/combo.dart';
+import '../config.dart';
 
 class ComboApi {
-  static const String baseUrl =
-      'https://bellezapro360.com'; // o tu URL en producción
+  static final String baseUrl = AppConfig.baseUrl; // o tu URL en producción
 
   static Future<List<Combo>> fetchCombos() async {
     final response = await http.get(Uri.parse('$baseUrl/api/combos'));

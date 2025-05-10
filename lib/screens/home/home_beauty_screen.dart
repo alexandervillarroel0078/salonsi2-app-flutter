@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../controllers/home_controller.dart';
-import '../services/especialistas_api.dart';
-import '../models/cliente.dart';
-import '../services/cliente_api.dart';
-import 'services_screen.dart';
-import 'combos_screen.dart';
-import 'package:salonappflutter/screens/promotions_screen.dart';
+import '../../controllers/home_controller.dart';
+
+import '../../models/cliente.dart';
+import '../../services/cliente_api.dart';
+import '../services/services_screen.dart';
+import '../services/combos_screen.dart';
+import 'package:salonappflutter/screens/services/promotions_screen.dart';
+import 'package:salonappflutter/screens/especialistas/especialista_perfil_screen.dart';
 
 class HomeBeautyScreen extends StatefulWidget {
   const HomeBeautyScreen({super.key});
@@ -286,84 +287,78 @@ class _HomeBeautyScreenState extends State<HomeBeautyScreen> {
               const SizedBox(height: 28),
 
               // Especialistas
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Hair Specialist',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text('View More', style: TextStyle(color: Colors.pink)),
-                ],
-              ),
-              const SizedBox(height: 12),
               SizedBox(
                 height: 160,
-                child: FutureBuilder<List<dynamic>>(
-                  future: EspecialistasApi.fetchEspecialistas(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final especialistas = snapshot.data!;
-
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: especialistas.length,
-                      itemBuilder: (context, index) {
-                        final esp = especialistas[index];
-                        return Container(
-                          width: 120,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(16)),
-                                child: Image.network(
-                                  esp['photo_url'] ?? '',
-                                  height: 90,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.image_not_supported),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      esp['name'] ?? '',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    const Icon(Icons.star,
-                                        size: 14, color: Colors.amber),
-                                  ],
-                                ),
-                              ),
-                            ],
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5, // número fijo de especialistas simulados
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const EspecialistaPerfilScreen(),
                           ),
                         );
                       },
+                      child: Container(
+                        width: 120,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Imagen simulada
+                            Container(
+                              height: 90,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.pink[50],
+                                borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(16)),
+                              ),
+                              child: const Text(
+                                'Aquí va la imagen',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 10, color: Colors.black54),
+                              ),
+                            ),
+                            // Datos del especialista
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: const [
+                                  Text(
+                                    'Nombre Apellido',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Icon(Icons.star,
+                                      size: 14, color: Colors.amber),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),

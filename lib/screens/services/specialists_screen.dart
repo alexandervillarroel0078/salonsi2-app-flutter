@@ -1,21 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-class EspecialistasApi {
-  static const String baseUrl =
-      'https://bellezapro360.com'; // cambia si usas Render o producción
-
-  static Future<List<dynamic>> fetchEspecialistas() async {
-    final response = await http.get(Uri.parse('$baseUrl/api/especialistas'));
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Error al cargar especialistas');
-    }
-  }
-}
 
 class SpecialistsScreen extends StatefulWidget {
   const SpecialistsScreen({super.key});
@@ -30,7 +13,6 @@ class _SpecialistsScreenState extends State<SpecialistsScreen> {
   @override
   void initState() {
     super.initState();
-    specialists = EspecialistasApi.fetchEspecialistas(); // Llama a la API
   }
 
   @override
@@ -53,15 +35,31 @@ class _SpecialistsScreenState extends State<SpecialistsScreen> {
           final List<dynamic> data = snapshot.data ?? [];
 
           return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: data.length,
             itemBuilder: (context, index) {
               final specialist = data[index];
-              return ListTile(
-                title: Text(specialist[
-                    'name']), // Suponiendo que tienes un campo 'name'
-                onTap: () {
-                  Navigator.pop(context, specialist['name']);
-                },
+              return Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: const EdgeInsets.only(bottom: 12),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.pinkAccent,
+                    child: const Icon(Icons.person, color: Colors.white),
+                  ),
+                  title: Text(
+                    specialist['name'] ?? 'Sin nombre',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(specialist['email'] ?? ''),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.pop(context, specialist['name']);
+                  },
+                ),
               );
             },
           );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/cita.dart'; // Modelo Cita
-import '../services/cita_api.dart'; // Servicio API
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/cita.dart';
+import '../controllers/citas_controller.dart';
 
 class CitasScreen extends StatefulWidget {
   const CitasScreen({super.key});
@@ -16,30 +15,7 @@ class _CitasScreenState extends State<CitasScreen> {
   @override
   void initState() {
     super.initState();
-    cargarCitasCliente();
-  }
-
-  void cargarCitasCliente() async {
-    final prefs = await SharedPreferences.getInstance();
-    final id = prefs.getInt('cliente_id');
-    if (id != null) {
-      setState(() {
-        citas = CitaApi.fetchCitasPorCliente(id);
-      });
-    }
-  }
-
-  Color getEstadoColor(String estado) {
-    switch (estado.toLowerCase()) {
-      case 'pendiente':
-        return Colors.orange;
-      case 'confirmada':
-        return Colors.green;
-      case 'cancelada':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
+    citas = CitasController.cargarCitasCliente();
   }
 
   @override
@@ -92,7 +68,8 @@ class _CitasScreenState extends State<CitasScreen> {
                             const Text('Estado: '),
                             Chip(
                               label: Text(cita.estado),
-                              backgroundColor: getEstadoColor(cita.estado),
+                              backgroundColor:
+                                  CitasController.getEstadoColor(cita.estado),
                               labelStyle: const TextStyle(color: Colors.white),
                             ),
                           ],

@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../config.dart'; // Asegúrate de importar correctamente
 
 class ServicesApi {
   static Future<List<dynamic>> fetchServices() async {
-    var url = Uri.parse('https://bellezapro360.com/api/services');
+    var url = Uri.parse('${AppConfig.baseUrl}/api/services');
 
     try {
       var response = await http.get(url);
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        return data; // <- OJO aquí ya no pones ['services'], sino directamente 'data'
+        return data;
       } else {
         throw Exception('Error al cargar servicios: ${response.statusCode}');
       }

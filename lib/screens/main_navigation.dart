@@ -1,7 +1,10 @@
 // lib/screens/main_navigation.dart
 import 'package:flutter/material.dart';
-import 'home_beauty_screen.dart';
-import 'client_profile_screen.dart';
+import 'home/home_beauty_screen.dart';
+import 'profile/profile_screen.dart';
+import 'chat_screen.dart';
+import 'reservas/reservas_screen.dart';
+import 'home/explore_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -14,11 +17,11 @@ class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    HomeBeautyScreen(),
-    Center(child: Text("Explore")),
-    Center(child: Text("Bookings")),
-    Center(child: Text("Chat")),
-    ClientProfileScreen(),
+    const HomeBeautyScreen(),
+    const ExploreScreen(),
+    const BookingsScreen(),
+    const ChatScreen(),
+    const ProfileScreen(),
   ];
 
   @override

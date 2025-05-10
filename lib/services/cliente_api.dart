@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/cliente.dart';
+import '../config.dart';
 
 class ClienteApi {
-  static const String baseUrl =
-      'https://bellezapro360.com'; // CAMBIA por tu IP o dominio en producción
+  static final String baseUrl =
+      AppConfig.baseUrl; // CAMBIA por tu IP o dominio en producción
 
   static Future<Cliente> fetchCliente(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/api/clientes/$id'));

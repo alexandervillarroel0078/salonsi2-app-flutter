@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/cita.dart';
+import '../config.dart';
 
 class CitaApi {
-  static const baseUrl =
-      'https://bellezapro360.com'; // o tu dominio si está desplegado
+  static final baseUrl = AppConfig.baseUrl;
 
   static Future<List<Cita>> fetchCitasPorCliente(int clienteId) async {
     final response =

@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
+import '../models/resumen_pedido.dart';
+import '../controllers/resumen_controller.dart';
 
 class ResumenPedidoScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> servicios;
-  final DateTime fecha;
-  final TimeOfDay hora;
-  final String especialista;
-  final String ubicacion;
+  final ResumenPedido pedido;
 
-  const ResumenPedidoScreen({
-    super.key,
-    required this.servicios,
-    required this.fecha,
-    required this.hora,
-    required this.especialista,
-    required this.ubicacion,
-  });
+  const ResumenPedidoScreen({super.key, required this.pedido});
 
   @override
   Widget build(BuildContext context) {
-    double total = servicios.fold(
-        0.0, (sum, item) => sum + (item['price'] as num).toDouble());
+    double total = pedido.servicios
+        .fold(0.0, (sum, item) => sum + (item['price'] as num).toDouble());
 
     return Scaffold(
       appBar: AppBar(
@@ -33,16 +24,16 @@ class ResumenPedidoScreen extends StatelessWidget {
           children: [
             const Text('Servicios:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ...servicios.map((s) => ListTile(
+            ...pedido.servicios.map((s) => ListTile(
                   title: Text(s['name']),
                   subtitle: Text('Duración: ${s['duration']} min'),
                   trailing: Text('Bs ${s['price']}'),
                 )),
             const Divider(),
-            Text('Fecha: ${fecha.toString().split(' ')[0]}'),
-            Text('Hora: ${hora.format(context)}'),
-            Text('Especialista: $especialista'),
-            Text('Ubicación: $ubicacion'),
+            Text('Fecha: ${pedido.fecha.toString().split(' ')[0]}'),
+            Text('Hora: ${pedido.hora}'),
+            Text('Especialista: ${pedido.especialista}'),
+            Text('Ubicación: ${pedido.ubicacion}'),
             const SizedBox(height: 16),
             Text('Total: Bs $total',
                 style:
@@ -51,23 +42,22 @@ class ResumenPedidoScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await ResumenController.enviarPedido(pedido);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('¡Pedido confirmado!')),
                   );
-
                   Future.delayed(const Duration(seconds: 1), () {
                     Navigator.popUntil(context, (route) => route.isFirst);
                   });
                 },
-                child: const Text('Finalizar pedido'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.pinkAccent,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: const Text('Finalizar pedido'),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/promotion.dart';
+import '../config.dart';
 
 class PromotionsApi {
-  static const String baseUrl =
-      'https://bellezapro360.com'; // Usa tu URL si es producción
+  static final String baseUrl =
+      AppConfig.baseUrl; // Usa tu URL si es producción
 
   static Future<List<Promotion>> fetchPromotions() async {
     final response = await http.get(Uri.parse('$baseUrl/api/promotions'));
