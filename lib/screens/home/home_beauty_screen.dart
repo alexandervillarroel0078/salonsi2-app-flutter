@@ -6,7 +6,7 @@ import '../../services/cliente_api.dart';
 import '../services/services_screen.dart';
 import '../services/combos_screen.dart';
 import 'package:salonappflutter/screens/services/promotions_screen.dart';
-import 'package:salonappflutter/screens/especialistas/personal_perfil_screen.dart';
+import 'package:salonappflutter/screens/personal/personal_perfil_screen.dart';
 
 class HomeBeautyScreen extends StatefulWidget {
   const HomeBeautyScreen({super.key});
